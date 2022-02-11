@@ -29,4 +29,9 @@ public class DebitAccount extends Account {
                     .multiply(BigDecimal.valueOf(days / 365.0))));
         } catch (BanksException ignored) { }
     }
+
+    @Override
+    public String getType() {
+        return "Debit";
+    }
 }

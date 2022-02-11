@@ -1,4 +1,4 @@
-package main.banks.services;
+package main.banks.providers;
 
 import java.time.LocalDateTime;
 import java.time.Period;

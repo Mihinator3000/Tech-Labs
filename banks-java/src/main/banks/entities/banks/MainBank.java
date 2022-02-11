@@ -2,7 +2,7 @@ package main.banks.entities.banks;
 
 import main.banks.entities.clients.Client;
 import main.banks.entities.clients.passport.PassportInfo;
-import main.banks.services.TimeProvider;
+import main.banks.providers.TimeProvider;
 import main.banks.tools.BanksException;
 
 import java.time.LocalDateTime;
@@ -13,8 +13,8 @@ public class MainBank {
 
     private final TimeProvider timeProvider;
 
-    private List<Bank> banks;
-    private List<Client> clients;
+    private final List<Bank> banks;
+    private final List<Client> clients;
 
     public MainBank() {
         timeProvider = new TimeProvider();
@@ -43,6 +43,15 @@ public class MainBank {
         banks.remove(bank);
     }
 
+
+    public List<Bank> getBanks() {
+        return banks;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
     public Client addClient(Client client) {
         clients.add(client);
         return client;
@@ -56,12 +65,12 @@ public class MainBank {
                 .toList();
     }
 
-    public Client getClient(PassportInfo passportInfo) {
+    public Client getClient(PassportInfo passportInfo) throws BanksException {
         return clients
                 .stream()
                 .filter(u -> u.getPassport().equals(passportInfo))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new BanksException("No client found"));
     }
 
     public void deleteClient(Client client) {

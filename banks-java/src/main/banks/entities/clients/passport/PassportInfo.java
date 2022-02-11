@@ -40,4 +40,9 @@ public class PassportInfo {
     public int hashCode() {
         return Objects.hash(batch, code);
     }
+
+    @Override
+    public String toString() {
+        return "%04d %06d".formatted(batch, code);
+    }
 }

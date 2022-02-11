@@ -33,4 +33,9 @@ public class CreditAccount extends Account {
             balance = bank.getCreditLimit();
         }
     }
+
+    @Override
+    public String getType() {
+        return "Credit";
+    }
 }

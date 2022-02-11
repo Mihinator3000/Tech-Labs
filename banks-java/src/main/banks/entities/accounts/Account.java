@@ -75,4 +75,6 @@ public abstract class Account {
     }
 
     public abstract void accrualOfPercents(BalanceState balanceState, int days);
+
+    public abstract String getType();
 }

@@ -37,6 +37,11 @@ public class DepositAccount extends Account {
         } catch (BanksException ignored) { }
     }
 
+    @Override
+    public String getType() {
+        return "Deposit";
+    }
+
     private static BigDecimal getInterest(BigDecimal amount) {
         return BigDecimal.valueOf(
                 amount.compareTo(BigDecimal.valueOf(50000)) < 0 ? 3

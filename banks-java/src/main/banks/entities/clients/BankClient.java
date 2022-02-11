@@ -87,7 +87,7 @@ public class BankClient implements Client {
     }
 
     public boolean checkIfDubious() {
-        return address == null || passport == null;
+        return address == null || address.isBlank() || passport == null;
     }
 
     @Override

@@ -12,7 +12,7 @@ import main.banks.entities.transaction.Replenishment;
 import main.banks.entities.transaction.Transaction;
 import main.banks.entities.transaction.Withdrawal;
 import main.banks.enums.AccountTypes;
-import main.banks.services.TimeProvider;
+import main.banks.providers.TimeProvider;
 import main.banks.tools.BanksException;
 
 import java.math.BigDecimal;
@@ -61,7 +61,7 @@ public class Bank {
 
     public void setCreditCommission(BigDecimal creditCommission) {
         this.creditCommission = creditCommission;
-        Notify("Changed credit limit to" + creditLimit, AccountTypes.CREDIT);
+        Notify("Changed credit limit to " + creditLimit, AccountTypes.CREDIT);
     }
 
     public BigDecimal getCreditLimit() {
@@ -70,7 +70,7 @@ public class Bank {
 
     public void setCreditLimit(BigDecimal creditLimit) {
         this.creditLimit = creditLimit;
-        Notify("Changed credit limit to" + creditLimit, AccountTypes.CREDIT);
+        Notify("Changed credit limit to " + creditLimit, AccountTypes.CREDIT);
     }
 
     public BigDecimal getDebitInterest() {
@@ -79,7 +79,7 @@ public class Bank {
 
     public void setDebitInterest(BigDecimal debitInterest) {
         this.debitInterest = debitInterest;
-        Notify("Changed debit interest to" + debitInterest, AccountTypes.DEBIT);
+        Notify("Changed debit interest to " + debitInterest, AccountTypes.DEBIT);
     }
 
     public Account addAccount(Client client, AccountTypes accountTypes) throws BanksException {
@@ -103,6 +103,14 @@ public class Bank {
         return account;
     }
 
+    public Account getAccount(UUID accountId) {
+        return accounts
+                .stream()
+                .filter(u -> u.getId().equals(accountId))
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Account> getAccounts() {
         return accounts;
     }
@@ -113,6 +121,14 @@ public class Bank {
 
     public void deleteAccount(Account account) {
         accounts.remove(account);
+    }
+
+    public void deleteAccount(UUID id) {
+        deleteAccount(accounts
+                .stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null));
     }
 
     public void replenish(Account account, BigDecimal amount) throws BanksException {
