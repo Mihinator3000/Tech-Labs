@@ -18,9 +18,7 @@ import main.banks.tools.BanksException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Bank {
@@ -106,7 +104,7 @@ public class Bank {
     public Account getAccount(UUID accountId) {
         return accounts
                 .stream()
-                .filter(u -> u.getId().equals(accountId))
+                .filter(a -> a.getId().equals(accountId))
                 .findFirst()
                 .orElse(null);
     }
@@ -126,7 +124,7 @@ public class Bank {
     public void deleteAccount(UUID id) {
         deleteAccount(accounts
                 .stream()
-                .filter(u -> u.getId().equals(id))
+                .filter(a -> a.getId().equals(id))
                 .findFirst()
                 .orElse(null));
     }
@@ -143,7 +141,7 @@ public class Bank {
     public void transact(Account sender, UUID receiverId, BigDecimal amount) throws BanksException {
         Account receiver = accounts
                 .stream()
-                .filter(u -> u.getId().equals(receiverId))
+                .filter(a -> a.getId().equals(receiverId))
                 .findFirst()
                 .orElseThrow(() -> new BanksException(
                         "Account with id " + receiverId + " was not found"));
@@ -181,11 +179,11 @@ public class Bank {
 
         account.getHistory()
                 .stream()
-                .filter(u -> !previousAccrualTime.isAfter(u.getTime())
-                        && !u.getTime().isAfter(currentTime))
-                .collect(Collectors.groupingBy(u -> u.getTime().getDayOfMonth()))
+                .filter(b -> !previousAccrualTime.isAfter(b.getTime())
+                        && !b.getTime().isAfter(currentTime))
+                .collect(Collectors.groupingBy(b -> b.getTime().getDayOfMonth()))
                 .values()
-                .forEach(u -> balanceStates.add(u.get(u.size() - 1)));
+                .forEach(b -> balanceStates.add(b.get(b.size() - 1)));
 
         for (int i = 1; i < balanceStates.size(); i++) {
             var days = (int)ChronoUnit.DAYS.between(
@@ -210,7 +208,7 @@ public class Bank {
 
     private void Notify(String notificationMessage, AccountTypes accountType) {
         accounts.stream()
-                .filter(u -> u.isInstanceOf(accountType))
-                .forEach(u -> u.notifyClient(notificationMessage));
+                .filter(a -> a.isInstanceOf(accountType))
+                .forEach(a -> a.notifyClient(notificationMessage));
     }
 }

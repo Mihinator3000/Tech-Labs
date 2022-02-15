@@ -60,8 +60,8 @@ public class MainBank {
     public List<Client> findClients(String name, String surname) {
         return clients
                 .stream()
-                .filter(u -> u.getName().equals(name)
-                        && u.getSurname().equals(surname))
+                .filter(c -> c.getName().equals(name)
+                        && c.getSurname().equals(surname))
                 .toList();
     }
 
@@ -71,15 +71,15 @@ public class MainBank {
 
         return clients
                 .stream()
-                .filter(u -> passportInfo.equals(u.getPassport()))
+                .filter(c -> passportInfo.equals(c.getPassport()))
                 .findFirst()
                 .orElseThrow(() -> new BanksException("No client found"));
     }
 
     public void deleteClient(Client client) {
         clients.remove(client);
-        banks.forEach(u -> u.findAccounts(client)
-                .forEach(a -> u.getAccounts().remove(a)));
+        banks.forEach(b -> b.findAccounts(client)
+                .forEach(a -> b.getAccounts().remove(a)));
     }
 
     public void accruePercentage() {

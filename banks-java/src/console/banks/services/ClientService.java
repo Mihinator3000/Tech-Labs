@@ -122,7 +122,7 @@ public record ClientService(MainBank mainBank, Client client, IOProvider ioProvi
 
         ioProvider.printLine("Balance: " + client.getBalance().setScale(2, RoundingMode.CEILING));
 
-        mainBank.getBanks().forEach(u -> u
+        mainBank.getBanks().forEach(b -> b
                 .getAccounts()
                 .stream()
                 .filter(a -> a.getClient().equals(client))
