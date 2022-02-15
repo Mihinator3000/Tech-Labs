@@ -5,7 +5,7 @@ import main.banks.entities.clients.passport.PassportInfo;
 import main.banks.providers.TimeProvider;
 import main.banks.tools.BanksException;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class MainBank {
     }
 
     public void accruePercentage() {
-        LocalDateTime time = timeProvider.now();
+        OffsetDateTime time = timeProvider.now();
 
         for (var bank : banks)
             bank.accrualOfInterestOrCommission(time);

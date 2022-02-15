@@ -16,7 +16,7 @@ import main.banks.providers.TimeProvider;
 import main.banks.tools.BanksException;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class Bank {
 
     private TimeProvider timeProvider;
-    private LocalDateTime previousAccrualTime;
+    private OffsetDateTime previousAccrualTime;
 
     private BigDecimal maxSumForDubiousClients;
     private BigDecimal creditCommission;
@@ -156,7 +156,7 @@ public class Bank {
         transactions.add(new Withdrawal(account, amount).execute());
     }
 
-    void accrualOfInterestOrCommission(LocalDateTime currentTime) {
+    void accrualOfInterestOrCommission(OffsetDateTime currentTime) {
         for (var account : accounts)
             accrueInterestForAccount(account, currentTime);
 
@@ -174,7 +174,7 @@ public class Bank {
         };
     }
 
-    private void accrueInterestForAccount(Account account, LocalDateTime currentTime) {
+    private void accrueInterestForAccount(Account account, OffsetDateTime currentTime) {
         account.getHistory().add(new BalanceState(account.getBalance(), currentTime));
 
         List<BalanceState> balanceStates = new ArrayList<>();

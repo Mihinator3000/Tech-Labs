@@ -1,14 +1,15 @@
 package main.banks.providers;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.Period;
+import java.time.ZoneOffset;
 
 public class TimeProvider {
 
     private Period timeShift = Period.ZERO;
 
-    public LocalDateTime now() {
-        return LocalDateTime.now().plus(timeShift);
+    public OffsetDateTime now() {
+        return OffsetDateTime.now(ZoneOffset.UTC).plus(timeShift);
     }
 
     public void addTime(Period timeShift) {
