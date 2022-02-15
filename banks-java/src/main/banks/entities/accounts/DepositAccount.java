@@ -3,6 +3,7 @@ package main.banks.entities.accounts;
 import main.banks.entities.accounts.balance.BalanceState;
 import main.banks.entities.banks.Bank;
 import main.banks.entities.clients.Client;
+import main.banks.enums.AccountTypes;
 import main.banks.tools.BanksException;
 
 import java.math.BigDecimal;
@@ -38,8 +39,8 @@ public class DepositAccount extends Account {
     }
 
     @Override
-    public String getType() {
-        return "Deposit";
+    public AccountTypes getType() {
+        return AccountTypes.DEPOSIT;
     }
 
     private static BigDecimal getInterest(BigDecimal amount) {
