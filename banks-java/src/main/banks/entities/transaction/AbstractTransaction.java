@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public abstract class AbstractTransaction {
 
-    private final Cancellable cancellable;
+    private boolean cancelled;
 
     protected final Account account;
     protected final BigDecimal amount;
@@ -15,8 +15,6 @@ public abstract class AbstractTransaction {
     protected AbstractTransaction(Account account, BigDecimal amount) {
         this.account = account;
         this.amount = amount;
-
-        cancellable = new Cancellable();
     }
 
     public Account getAccount() {
@@ -28,12 +26,15 @@ public abstract class AbstractTransaction {
     }
 
     public boolean isCancelled() {
-        return cancellable.isCancelled();
+        return cancelled;
     }
 
     public abstract AbstractTransaction execute() throws BanksException;
 
     public void cancel() throws BanksException {
-        cancellable.cancel();
+        if (this.cancelled)
+            throw new BanksException("Transaction is already cancelled");
+
+        this.cancelled = true;
     }
 }
