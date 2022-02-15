@@ -1,7 +1,5 @@
 package test.banks;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import main.banks.entities.accounts.Account;
 import main.banks.entities.banks.Bank;
 import main.banks.entities.banks.BankBuilder;
@@ -16,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Period;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class BanksTest {
 
@@ -56,11 +56,9 @@ class BanksTest {
 
         bank.transact(account1, account2, transactionAmount);
 
-        assert(account1.getBalance().equals(
-                openingBalance1.subtract(transactionAmount)));
+        assertEquals(account1.getBalance(), openingBalance1.subtract(transactionAmount));
 
-        assert(account2.getBalance().equals(
-                openingBalance2.add(transactionAmount)));
+        assertEquals(account2.getBalance(), openingBalance2.add(transactionAmount));
     }
 
     @Test
@@ -81,8 +79,8 @@ class BanksTest {
         bank.transact(account1, account2, transactionAmount);
         bank.getTransactions().get(0).cancel();
 
-        assert(account1.getBalance().compareTo(openingBalance1) == 0);
-        assert(account2.getBalance().compareTo(openingBalance2) == 0);
+        assertTrue(account1.getBalance().compareTo(openingBalance1) == 0);
+        assertTrue(account2.getBalance().compareTo(openingBalance2) == 0);
     }
 
     @Test
@@ -102,8 +100,7 @@ class BanksTest {
         bank.replenish(account, replenishmentAmount);
         bank.withdraw(account, withdrawalAmount);
 
-        assert(account.getBalance().compareTo(
-                openingBalance.add(replenishmentAmount).subtract(withdrawalAmount)) == 0);
+        assertEquals(account.getBalance(), openingBalance.add(replenishmentAmount).subtract(withdrawalAmount));
     }
 
     @Test
@@ -125,11 +122,11 @@ class BanksTest {
 
         mainBank.accruePercentage();
 
-        assert(account.getBalance().compareTo(
+        assertEquals(account.getBalance(),
                 openingBalance
                         .subtract(withdrawalAmount)
                         .subtract(creditCommission.multiply(
-                                BigDecimal.valueOf(dayShift)))) == 0);
+                                BigDecimal.valueOf(dayShift))));
     }
 
     @Test
@@ -148,10 +145,10 @@ class BanksTest {
 
         mainBank.accruePercentage();
 
-        assert(account.getBalance().compareTo(
+        assertEquals(account.getBalance(),
                 openingBalance.add(openingBalance
                         .multiply(debitInterest)
-                        .multiply(BigDecimal.valueOf(dayShift / 365.0)))) == 0);
+                        .multiply(BigDecimal.valueOf(dayShift / 365.0))));
     }
 
     @Test
@@ -171,10 +168,10 @@ class BanksTest {
 
         mainBank.accruePercentage();
 
-        assert(account.getBalance().compareTo(
+        assertTrue(0 == account.getBalance().compareTo(
                 openingBalance.add(openingBalance
                         .multiply(depositInterest)
-                        .multiply(BigDecimal.valueOf(dayShift / 365.0)))) == 0);
+                        .multiply(BigDecimal.valueOf(dayShift / 365.0)))));
     }
 
     @Test
@@ -190,7 +187,7 @@ class BanksTest {
 
         bank.setCreditLimit(BigDecimal.valueOf(-200));
 
-        assert(client.getNotifications().size() == 1);
+        assertEquals(client.getNotifications().size(), 1);
     }
 
     @Test
