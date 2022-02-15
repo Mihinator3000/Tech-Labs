@@ -43,6 +43,6 @@ public class PassportInfo {
 
     @Override
     public String toString() {
-        return "%04d %06d".formatted(batch, code);
+        return String.format("%04d %06d", batch, code);
     }
 }
