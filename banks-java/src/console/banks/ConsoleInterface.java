@@ -43,6 +43,7 @@ public class ConsoleInterface {
 
             if (input[0].charAt(0) != '/') {
                 ioProvider.printError("Input is not a command");
+                continue;
             }
 
             if (input[0].equals("/e") || input[0].equals("/exit"))
@@ -61,18 +62,18 @@ public class ConsoleInterface {
                                     .format(mainBank.getTimeProvider().now()));
                     default -> handleServiceInput(input);
                 }
-            } catch (BanksException e) {
-                ioProvider.printError(e.getMessage());
-            } catch (InputException e) {
-                ioProvider.printError(e.getMessage() == null
-                        ? "Command does not exist"
-                        : e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                ioProvider.printError("Incorrect command arguments");
             } catch (NumberFormatException e) {
                 ioProvider.printError("Incorrect number input");
             } catch (IllegalArgumentException e) {
                 ioProvider.printError("Incorrect id input");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                ioProvider.printError("Incorrect command arguments");
+            } catch (InputException e) {
+                ioProvider.printError(e.getMessage() == null
+                        ? "Command does not exist"
+                        : e.getMessage());
+            } catch (BanksException e) {
+                ioProvider.printError(e.getMessage());
             }
 
             ioProvider.printEmptyLine();
