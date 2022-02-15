@@ -66,6 +66,9 @@ public class MainBank {
     }
 
     public Client getClient(PassportInfo passportInfo) throws BanksException {
+        if (passportInfo == null)
+            throw new BanksException("Passport info is null");
+        
         return clients
                 .stream()
                 .filter(u -> u.getPassport().equals(passportInfo))
