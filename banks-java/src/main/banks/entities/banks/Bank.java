@@ -197,6 +197,9 @@ public class Bank {
     }
 
     private void checkIfDubious(Account account, BigDecimal amount) throws BanksException {
+        if (account == null)
+            throw new BanksException("Account is null");
+
         if (amount.compareTo(maxSumForDubiousClients) > 0 && account.getClient().checkIfDubious())
             throw new BanksException("Client is untrustworthy");
     }
