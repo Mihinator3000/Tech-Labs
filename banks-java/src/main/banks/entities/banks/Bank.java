@@ -163,7 +163,10 @@ public class Bank {
         previousAccrualTime = currentTime;
     }
 
-    private static AccountCreator resolveAccountCreator(AccountTypes accountType) {
+    private static AccountCreator resolveAccountCreator(AccountTypes accountType) throws BanksException {
+        if (accountType == null)
+            throw new BanksException("Passed enum is null");
+
         return switch (accountType) {
             case DEBIT -> new DebitAccountCreator();
             case DEPOSIT -> new DepositAccountCreator();
