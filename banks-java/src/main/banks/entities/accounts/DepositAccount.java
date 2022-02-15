@@ -44,8 +44,12 @@ public class DepositAccount extends Account {
     }
 
     private static BigDecimal getInterest(BigDecimal amount) {
-        return BigDecimal.valueOf(
-                amount.compareTo(BigDecimal.valueOf(50000)) < 0 ? 3
-                        : amount.compareTo(BigDecimal.valueOf(100000)) < 0 ? 3.5 : 4);
+        double interest;
+        if (amount.compareTo(BigDecimal.valueOf(50000)) < 0)
+            interest = 3;
+        else if (amount.compareTo(BigDecimal.valueOf(100000)) < 0)
+            interest = 3.5;
+        else interest = 4;
+        return BigDecimal.valueOf(interest);
     }
 }
