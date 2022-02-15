@@ -15,7 +15,7 @@ public class DebitAccount extends Account {
     }
 
     @Override
-    public final void setBalance(BigDecimal balance) throws BanksException {
+    public void setBalance(BigDecimal balance) throws BanksException {
         if (balance.compareTo(BigDecimal.ZERO) < 0)
             throw new BanksException("Account balance can't be less than 0");
 

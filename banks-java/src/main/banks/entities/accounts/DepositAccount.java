@@ -18,7 +18,7 @@ public class DepositAccount extends Account {
     }
 
     @Override
-    public final void setBalance(BigDecimal balance) throws BanksException {
+    public void setBalance(BigDecimal balance) throws BanksException {
         if (balance.compareTo(this.balance) < 0)
             throw new BanksException("Account is not withdrawable");
 

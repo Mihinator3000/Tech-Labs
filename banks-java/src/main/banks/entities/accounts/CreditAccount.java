@@ -16,7 +16,7 @@ public class CreditAccount extends Account {
     }
 
     @Override
-    public final void setBalance(BigDecimal balance) throws BanksException {
+    public void setBalance(BigDecimal balance) throws BanksException {
         if (balance.compareTo(bank.getCreditLimit()) < 0)
             throw new BanksException("Account balance can't be less than " + bank.getCreditLimit());
 
