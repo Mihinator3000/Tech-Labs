@@ -202,12 +202,12 @@ public class Bank {
     }
 
     private void Notify(String notificationMessage) {
-        accounts.forEach(u -> u.NotifyClient(notificationMessage));
+        accounts.forEach(u -> u.notifyClient(notificationMessage));
     }
 
     private void Notify(String notificationMessage, AccountTypes accountType) {
         accounts.stream()
                 .filter(u -> u.isInstanceOf(accountType))
-                .forEach(u -> u.NotifyClient(notificationMessage));
+                .forEach(u -> u.notifyClient(notificationMessage));
     }
 }

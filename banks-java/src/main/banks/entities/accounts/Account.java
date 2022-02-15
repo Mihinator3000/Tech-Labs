@@ -69,7 +69,7 @@ public abstract class Account {
         };
     }
 
-    public void NotifyClient(String notificationMessage) {
+    public void notifyClient(String notificationMessage) {
         if (notifyClient)
             client.addNotification(notificationMessage);
     }
