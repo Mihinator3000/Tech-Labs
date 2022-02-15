@@ -34,7 +34,7 @@ public class ConsoleInterface {
         currentService = new MainBankService(mainBank, ioProvider);
     }
 
-    public void run() {
+    public void startExecution() {
         while (true) {
 
             var input = ioProvider
