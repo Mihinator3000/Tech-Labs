@@ -59,7 +59,7 @@ public class Bank {
 
     public void setCreditCommission(BigDecimal creditCommission) {
         this.creditCommission = creditCommission;
-        Notify("Changed credit limit to " + creditLimit, AccountTypes.CREDIT);
+        Notify("Changed credit commission to " + creditCommission, AccountTypes.CREDIT);
     }
 
     public BigDecimal getCreditLimit() {
@@ -187,8 +187,8 @@ public class Bank {
 
         for (int i = 1; i < balanceStates.size(); i++) {
             var days = (int)ChronoUnit.DAYS.between(
-                    balanceStates.get(i).getTime(),
-                    balanceStates.get(i - 1).getTime());
+                    balanceStates.get(i - 1).getTime(),
+                    balanceStates.get(i).getTime());
 
             account.accrualOfPercents(balanceStates.get(i), days);
         }
