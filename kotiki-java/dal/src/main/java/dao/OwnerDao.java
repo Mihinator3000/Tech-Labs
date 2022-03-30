@@ -17,7 +17,7 @@ public class OwnerDao {
                 .list();
     }
 
-    public Owner getById(int id) {
+    public Owner get(int id) {
         return HibernateSessionFactory
                 .getSessionFactory()
                 .openSession()
@@ -46,40 +46,15 @@ public class OwnerDao {
         session.close();
     }
 
-    public void delete(int ownerId) {
+    public void delete(int id) {
         Session session = HibernateSessionFactory
                 .getSessionFactory()
                 .openSession();
 
-        Owner owner = session.get(Owner.class, ownerId);
-        System.out.println(ownerId + " " + owner.getId());
+        Owner owner = session.get(Owner.class, id);
+
         Transaction transaction = session.beginTransaction();
-
-        /*for (var c : owner.getCats()) {
-            c.setOwner(null);
-        }*/
-        session.update(owner);
-/*
-        for (var i: o.getCats()) {
-            i.setOwner(null);
-        }*/
-        //session.merge(o);
-        //session.delete(o);
-        /*transaction.commit();
-        session.close();*/
-/*
-
-        session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
-
-        transaction = session.beginTransaction();
-*/
-
-
-
         session.delete(owner);
-
         transaction.commit();
         session.close();
     }

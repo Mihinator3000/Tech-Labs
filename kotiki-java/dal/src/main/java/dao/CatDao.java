@@ -17,7 +17,7 @@ public class CatDao {
                 .list();
     }
 
-    public Cat getById(int id) {
+    public Cat get(int id) {
         return HibernateSessionFactory
                 .getSessionFactory()
                 .openSession()
@@ -46,10 +46,12 @@ public class CatDao {
         session.close();
     }
 
-    public void delete(Cat cat) {
+    public void delete(int id) {
         Session session = HibernateSessionFactory
                 .getSessionFactory()
                 .openSession();
+
+        Cat cat = session.get(Cat.class, id);
 
         Transaction transaction = session.beginTransaction();
         session.delete(cat);

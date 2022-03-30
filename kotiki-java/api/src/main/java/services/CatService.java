@@ -7,22 +7,30 @@ import java.util.List;
 
 public class CatService {
 
-    private final CatDao dao = new CatDao();
+    private final CatDao dao;
+
+    public CatService() {
+        dao = new CatDao();
+    }
+
+    public CatService(CatDao dao) {
+        this.dao = dao;
+    }
 
     public List<Cat> getAll() {
         return dao.getAll();
     }
 
     public Cat get(int id) {
-        return dao.getById(id);
+        return dao.get(id);
     }
 
     public void add(Cat cat) {
         dao.add(cat);
     }
 
-    public void delete(Cat cat) {
-        dao.delete(cat);
+    public void delete(int id) {
+        dao.delete(id);
     }
 
     public void update(Cat cat) {

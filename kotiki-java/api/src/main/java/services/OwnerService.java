@@ -7,7 +7,7 @@ import java.util.List;
 
 public class OwnerService {
 
-    private OwnerDao dao;
+    private final OwnerDao dao;
 
     public OwnerService() {
         dao = new OwnerDao();
@@ -22,15 +22,15 @@ public class OwnerService {
     }
 
     public Owner get(int id) {
-        return dao.getById(id);
+        return dao.get(id);
     }
 
     public void add(Owner owner) {
         dao.add(owner);
     }
 
-    public void delete(int owner) {
-        dao.delete(owner);
+    public void delete(int id) {
+        dao.delete(id);
     }
 
     public void update(Owner owner) {
