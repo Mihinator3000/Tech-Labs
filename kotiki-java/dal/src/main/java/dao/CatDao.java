@@ -7,27 +7,23 @@ import utils.HibernateSessionFactory;
 
 import java.util.List;
 
-public class CatDao {
+public class CatDao implements Dao<Cat> {
 
     public List<Cat> getAll() {
         return HibernateSessionFactory
-                .getSessionFactory()
-                .openSession()
+                .getSession()
                 .createQuery("from Cat order by id", Cat.class)
                 .list();
     }
 
     public Cat get(int id) {
         return HibernateSessionFactory
-                .getSessionFactory()
-                .openSession()
+                .getSession()
                 .get(Cat.class, id);
     }
 
     public void add(Cat cat) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Transaction transaction = session.beginTransaction();
         session.save(cat);
@@ -36,9 +32,7 @@ public class CatDao {
     }
 
     public void update(Cat cat) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Transaction transaction = session.beginTransaction();
         session.merge(cat);
@@ -47,9 +41,7 @@ public class CatDao {
     }
 
     public void delete(int id) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Cat cat = session.get(Cat.class, id);
 

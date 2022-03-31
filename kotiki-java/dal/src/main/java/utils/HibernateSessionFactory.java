@@ -2,6 +2,7 @@ package utils;
 
 import models.Cat;
 import models.Owner;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -12,7 +13,11 @@ public class HibernateSessionFactory {
 
     private HibernateSessionFactory() {}
 
-    public static SessionFactory getSessionFactory() {
+    public static Session getSession() {
+        return getSessionFactory().openSession();
+    }
+
+    private static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             var configuration = new Configuration()
                     .configure()

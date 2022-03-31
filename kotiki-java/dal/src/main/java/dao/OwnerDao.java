@@ -7,27 +7,23 @@ import utils.HibernateSessionFactory;
 
 import java.util.List;
 
-public class OwnerDao {
+public class OwnerDao implements Dao<Owner> {
 
     public List<Owner> getAll() {
         return HibernateSessionFactory
-                .getSessionFactory()
-                .openSession()
+                .getSession()
                 .createQuery("from Owner order by id", Owner.class)
                 .list();
     }
 
     public Owner get(int id) {
         return HibernateSessionFactory
-                .getSessionFactory()
-                .openSession()
+                .getSession()
                 .get(Owner.class, id);
     }
 
     public void add(Owner owner) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Transaction transaction = session.beginTransaction();
         session.save(owner);
@@ -36,9 +32,7 @@ public class OwnerDao {
     }
 
     public void update(Owner owner) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Transaction transaction = session.beginTransaction();
         session.merge(owner);
@@ -47,9 +41,7 @@ public class OwnerDao {
     }
 
     public void delete(int id) {
-        Session session = HibernateSessionFactory
-                .getSessionFactory()
-                .openSession();
+        Session session = HibernateSessionFactory.getSession();
 
         Owner owner = session.get(Owner.class, id);
 

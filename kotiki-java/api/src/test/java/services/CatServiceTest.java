@@ -1,6 +1,7 @@
 package services;
 
 import dao.CatDao;
+import dao.Dao;
 import enums.Color;
 import models.Cat;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,14 +10,12 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class CatServiceTest {
 
     private CatService service;
-    private CatDao dao;
+    private Dao<Cat> dao;
 
     @BeforeEach
     public void setup() {

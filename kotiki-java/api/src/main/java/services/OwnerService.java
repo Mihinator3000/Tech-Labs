@@ -1,5 +1,6 @@
 package services;
 
+import dao.Dao;
 import dao.OwnerDao;
 import models.Owner;
 
@@ -7,13 +8,13 @@ import java.util.List;
 
 public class OwnerService {
 
-    private final OwnerDao dao;
+    private final Dao<Owner> dao;
 
     public OwnerService() {
         dao = new OwnerDao();
     }
 
-    public OwnerService(OwnerDao dao) {
+    public OwnerService(Dao<Owner> dao) {
         this.dao = dao;
     }
 

@@ -1,5 +1,6 @@
 package services;
 
+import dao.Dao;
 import dao.OwnerDao;
 import models.Cat;
 import models.Owner;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.*;
 public class OwnerServiceTest {
 
     private OwnerService service;
-    private OwnerDao dao;
+    private Dao<Owner> dao;
 
     @BeforeEach
     public void setup() {

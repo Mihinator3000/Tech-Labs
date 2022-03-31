@@ -1,19 +1,20 @@
 package services;
 
 import dao.CatDao;
+import dao.Dao;
 import models.Cat;
 
 import java.util.List;
 
 public class CatService {
 
-    private final CatDao dao;
+    private final Dao<Cat> dao;
 
     public CatService() {
         dao = new CatDao();
     }
 
-    public CatService(CatDao dao) {
+    public CatService(Dao<Cat> dao) {
         this.dao = dao;
     }
 
