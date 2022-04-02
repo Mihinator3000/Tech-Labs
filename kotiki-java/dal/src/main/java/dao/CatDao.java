@@ -1,53 +1,20 @@
 package dao;
 
+import enums.Color;
 import models.Cat;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import utils.HibernateSessionFactory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public class CatDao implements Dao<Cat> {
+@Repository
+public interface CatDao extends JpaRepository<Cat, Integer> {
 
-    public List<Cat> getAll() {
-        return HibernateSessionFactory
-                .getSession()
-                .createQuery("from Cat order by id", Cat.class)
-                .list();
-    }
+    @Query("select c from Cat c where c.breed = :breed")
+    List<Cat> findByBreed(@Param("breed") String breed);
 
-    public Cat get(int id) {
-        return HibernateSessionFactory
-                .getSession()
-                .get(Cat.class, id);
-    }
-
-    public void add(Cat cat) {
-        Session session = HibernateSessionFactory.getSession();
-
-        Transaction transaction = session.beginTransaction();
-        session.save(cat);
-        transaction.commit();
-        session.close();
-    }
-
-    public void update(Cat cat) {
-        Session session = HibernateSessionFactory.getSession();
-
-        Transaction transaction = session.beginTransaction();
-        session.merge(cat);
-        transaction.commit();
-        session.close();
-    }
-
-    public void delete(int id) {
-        Session session = HibernateSessionFactory.getSession();
-
-        Cat cat = session.get(Cat.class, id);
-
-        Transaction transaction = session.beginTransaction();
-        session.delete(cat);
-        transaction.commit();
-        session.close();
-    }
+    @Query("select c from Cat c where c.color = :color")
+    List<Cat> findByColor(@Param("color") Color color);
 }

@@ -1,40 +1,46 @@
 package services;
 
-import dao.Dao;
 import dao.OwnerDao;
+import models.Cat;
 import models.Owner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tools.DalException;
 
 import java.util.List;
+import java.util.Optional;
 
-public class OwnerService {
+@Service
+public class OwnerService implements AbstractOwnerService {
 
-    private final Dao<Owner> dao;
+    private final OwnerDao dao;
 
-    public OwnerService() {
-        dao = new OwnerDao();
-    }
-
-    public OwnerService(Dao<Owner> dao) {
+    @Autowired
+    public OwnerService(OwnerDao dao) {
         this.dao = dao;
     }
 
     public List<Owner> getAll() {
-        return dao.getAll();
+        return dao.findAll();
     }
 
     public Owner get(int id) {
-        return dao.get(id);
+        Optional<Owner> result = dao.findById(id);
+        if (result.isEmpty())
+            throw new DalException("No owner with such id found");
+
+        return result.get();
     }
 
-    public void add(Owner owner) {
-        dao.add(owner);
+    public void save(Owner owner) {
+        dao.save(owner);
     }
 
     public void delete(int id) {
-        dao.delete(id);
+        dao.deleteById(id);
     }
 
-    public void update(Owner owner) {
-        dao.update(owner);
+    public boolean exists(int id) {
+        return dao.existsById(id);
     }
 }
