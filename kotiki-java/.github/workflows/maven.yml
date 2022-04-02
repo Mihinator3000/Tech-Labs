@@ -15,9 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
     - name: Set up JDK 13
-      uses: actions/setup-java@v3
+      uses: guillonapa/action-maven-cli/jdk13@master
       with:
         java-version: '13'
         distribution: 'azul'
