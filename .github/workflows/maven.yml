@@ -24,6 +24,6 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: Run maven script
-      uses: uses: guillonapa/action-maven-cli/jdk13@master
+      uses: guillonapa/action-maven-cli/jdk13@master
       with:
         lifecycle: 'clean package test kotiki-java/pom.xml'
