@@ -19,7 +19,7 @@ jobs:
       uses: guillonapa/action-maven-cli/jdk13@master
       with:
         java-version: '13'
-        distribution: 'azul'
+        distribution: 'Liberica'
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file kotiki-java/pom.xml
