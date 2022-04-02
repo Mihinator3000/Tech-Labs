@@ -2,7 +2,6 @@ package dto;
 
 import enums.Color;
 import lombok.*;
-import services.CatService;
 
 import java.time.LocalDate;
 import java.util.List;

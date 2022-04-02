@@ -41,7 +41,8 @@ public class CatConverter {
                 .id(cat.getId())
                 .name(cat.getName())
                 .birthDate(cat.getBirthDate())
-                .breed(cat.getBreed());
+                .breed(cat.getBreed())
+                .color(cat.getColor());
 
         if (cat.getOwnerId() != null)
             catBuilder.owner(ownerService.get(cat.getOwnerId()));
