@@ -10,9 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EntityScan("models")
 @EnableJpaRepositories("dao")
-@ComponentScan({"controllers"})
-@ComponentScan({"services"})
-@ComponentScan({"utils"})
+@ComponentScan({"controllers", "services", "utils"})
 public class Application {
 
     public static void main(String[] args) {

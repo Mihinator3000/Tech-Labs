@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Component("catService")
 public class CatService implements AbstractCatService {
 
     private final CatDao dao;
