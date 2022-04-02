@@ -12,9 +12,7 @@ import java.util.List;
 @Repository
 public interface CatDao extends JpaRepository<Cat, Integer> {
 
-    @Query("select c from Cat c where c.breed = :breed")
     List<Cat> findByBreed(@Param("breed") String breed);
 
-    @Query("select c from Cat c where c.color = :color")
     List<Cat> findByColor(@Param("color") Color color);
 }
