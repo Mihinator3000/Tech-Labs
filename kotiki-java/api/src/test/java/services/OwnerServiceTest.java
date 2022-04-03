@@ -1,15 +1,14 @@
 package services;
 
-import dao.Dao;
 import dao.OwnerDao;
 import models.Cat;
 import models.Owner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.*;
 public class OwnerServiceTest {
 
     private OwnerService service;
-    private Dao<Owner> dao;
+    private OwnerDao dao;
 
     @BeforeEach
     public void setup() {
@@ -31,10 +30,10 @@ public class OwnerServiceTest {
         var owner2 = Owner.builder().id(2).name("Name2").build();
         var owners = List.of(owner1, owner2);
 
-        when(dao.getAll()).thenReturn(owners);
+        when(dao.findAll()).thenReturn(owners);
 
         List<Owner> result = service.getAll();
-        verify(dao).getAll();
+        verify(dao).findAll();
 
         assertEquals(2, result.size());
 
@@ -47,17 +46,17 @@ public class OwnerServiceTest {
     public void testGet() {
         var owner = Owner.builder().id(1).name("Name").build();
 
-        when(dao.get(1)).thenReturn(owner);
+        when(dao.findById(1)).thenReturn(Optional.of(owner));
 
         Owner result = service.get(1);
 
-        verify(dao).get(anyInt());
+        verify(dao).findById(anyInt());
 
         assertEquals(owner, result);
     }
 
     @Test
-    public void testAdd() {
+    public void testSave() {
         var owner = Owner.builder()
                 .id(1)
                 .name("SomeName")
@@ -65,23 +64,13 @@ public class OwnerServiceTest {
                 .cats(List.of(new Cat("Cat")))
                 .build();
 
-        service.add(owner);
-        verify(dao, times(1)).add(any());
-    }
-
-    @Test
-    public void testUpdate() {
-        var owner = new Owner("Namely name");
-
-        owner.setBirthDate(LocalDate.now(Clock.systemUTC()));
-
-        service.update(owner);
-        verify(dao, times(1)).update(any());
+        service.save(owner);
+        verify(dao, times(1)).save(any());
     }
 
     @Test
     public void testDelete() {
         service.delete(1);
-        verify(dao, times(1)).delete(anyInt());
+        verify(dao, times(1)).deleteById(anyInt());
     }
 }

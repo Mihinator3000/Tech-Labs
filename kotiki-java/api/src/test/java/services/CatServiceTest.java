@@ -1,13 +1,12 @@
 package services;
 
 import dao.CatDao;
-import dao.Dao;
-import enums.Color;
 import models.Cat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -15,7 +14,7 @@ import static org.mockito.Mockito.*;
 public class CatServiceTest {
 
     private CatService service;
-    private Dao<Cat> dao;
+    private CatDao dao;
 
     @BeforeEach
     public void setup() {
@@ -29,10 +28,10 @@ public class CatServiceTest {
         var cat2 = Cat.builder().id(2).name("Also A Cat").build();
         var cats = List.of(cat1, cat2);
 
-        when(dao.getAll()).thenReturn(cats);
+        when(dao.findAll()).thenReturn(cats);
 
         List<Cat> result = service.getAll();
-        verify(dao).getAll();
+        verify(dao).findAll();
 
         assertEquals(2, result.size());
 
@@ -45,40 +44,30 @@ public class CatServiceTest {
     public void testGet() {
         var cat = Cat.builder().id(1).name("Name").build();
 
-        when(dao.get(1)).thenReturn(cat);
+        when(dao.findById(1)).thenReturn(Optional.of(cat));
 
         Cat result = service.get(1);
 
-        verify(dao).get(anyInt());
+        verify(dao).findById(anyInt());
 
         assertEquals(cat, result);
     }
 
     @Test
-    public void testAdd() {
+    public void testSave() {
         var cat = Cat.builder()
                 .id(1)
                 .name("Name")
                 .friends(List.of(new Cat("Another Cat")))
                 .build();
 
-        service.add(cat);
-        verify(dao, times(1)).add(any());
-    }
-
-    @Test
-    public void testUpdate() {
-        var cat = new Cat("Kitty");
-
-        cat.setColor(Color.BLUE);
-
-        service.update(cat);
-        verify(dao, times(1)).update(any());
+        service.save(cat);
+        verify(dao, times(1)).save(any());
     }
 
     @Test
     public void testDelete() {
         service.delete(1);
-        verify(dao, times(1)).delete(anyInt());
+        verify(dao, times(1)).deleteById(anyInt());
     }
 }

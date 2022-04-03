@@ -1,60 +1,78 @@
 package controllers;
 
-import models.Owner;
-import services.OwnerService;
-import tools.ControllerException;
+import dto.OwnerDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import services.AbstractOwnerService;
+import utils.OwnerConverter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RestController
+@RequestMapping("/api/owner")
 public class OwnerController {
 
-    private final OwnerService service;
+    private final AbstractOwnerService service;
+    private final OwnerConverter converter;
 
-    public OwnerController() {
-        service = new OwnerService();
-    }
-
-    public OwnerController(OwnerService service) {
+    @Autowired
+    public OwnerController(AbstractOwnerService service, OwnerConverter converter) {
         this.service = service;
+        this.converter = converter;
     }
 
-    public List<Owner> getAll() {
+    @GetMapping("/get/all")
+    public List<OwnerDto> getAll() {
         try {
-            return service.getAll();
+            return service
+                    .getAll()
+                    .stream()
+                    .map(converter::toDto)
+                    .collect(Collectors.toList());
         } catch (Exception e){
-            throw new ControllerException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
-    public Owner get(int id) {
+    @GetMapping("/get/{id}")
+    public OwnerDto get(@PathVariable int id) {
         try {
-            return service.get(id);
+            return converter.toDto(service.get(id));
         } catch (Exception e) {
-            throw new ControllerException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    public void add(Owner owner) {
+    @PostMapping("/create")
+    public void create(@RequestBody OwnerDto owner) {
         try {
-            service.add(owner);
+            service.save(converter.toModel(owner));
         } catch (Exception e) {
-            throw new ControllerException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void delete(int id) {
+    @PostMapping("/update")
+    public void update(@RequestBody OwnerDto owner) {
+        if (!service.exists(owner.getId()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        try {
+            service.save(converter.toModel(owner));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public void delete(@PathVariable int id) {
         try {
             service.delete(id);
         } catch (Exception e) {
-            throw new ControllerException(e.getMessage());
-        }
-    }
-
-    public void update(Owner owner) {
-        try {
-            service.update(owner);
-        } catch (Exception e) {
-            throw new ControllerException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 }
