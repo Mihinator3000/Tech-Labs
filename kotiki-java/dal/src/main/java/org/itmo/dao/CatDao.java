@@ -13,4 +13,10 @@ public interface CatDao extends JpaRepository<Cat, Integer> {
     List<Cat> findByBreed(String breed);
 
     List<Cat> findByColor(Color color);
+
+    List<Cat> findByOwnerId(int ownerId);
+
+    List<Cat> findByBreedAndOwnerId(String breed, int ownerId);
+
+    List<Cat> findByColorAndOwnerId(Color color, int ownerId);
 }

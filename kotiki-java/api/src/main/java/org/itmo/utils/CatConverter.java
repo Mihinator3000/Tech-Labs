@@ -2,21 +2,21 @@ package org.itmo.utils;
 
 import org.itmo.dto.CatDto;
 import org.itmo.models.Cat;
+import org.itmo.services.AbstractCatService;
+import org.itmo.services.AbstractOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.itmo.services.CatService;
-import org.itmo.services.OwnerService;
 
 import java.util.stream.Collectors;
 
 @Component
 public class CatConverter {
 
-    private final CatService catService;
-    private final OwnerService ownerService;
+    private final AbstractCatService catService;
+    private final AbstractOwnerService ownerService;
 
     @Autowired
-    public CatConverter(CatService catService, OwnerService ownerService) {
+    public CatConverter(AbstractCatService catService, AbstractOwnerService ownerService) {
         this.catService = catService;
         this.ownerService = ownerService;
     }

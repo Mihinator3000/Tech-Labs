@@ -40,6 +40,18 @@ public class CatService implements AbstractCatService {
         return dao.findByColor(color);
     }
 
+    public List<Cat> getByOwnerId(int ownerId) {
+        return dao.findByOwnerId(ownerId);
+    }
+
+    public List<Cat> getByBreedAndOwnerId(String breed, int ownerId) {
+        return dao.findByBreedAndOwnerId(breed, ownerId);
+    }
+
+    public List<Cat> getByColorAndOwnerId(Color color, int ownerId) {
+        return dao.findByColorAndOwnerId(color, ownerId);
+    }
+
     public void save(Cat cat) {
         dao.save(cat);
     }

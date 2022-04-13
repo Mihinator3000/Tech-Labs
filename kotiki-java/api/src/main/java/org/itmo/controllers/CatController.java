@@ -2,8 +2,11 @@ package org.itmo.controllers;
 
 import org.itmo.dto.CatDto;
 import org.itmo.enums.Color;
+import org.itmo.models.Cat;
+import org.itmo.services.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.itmo.services.AbstractCatService;
@@ -16,19 +19,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/cat")
 public class CatController extends BaseController {
 
-    private final AbstractCatService service;
+    private final AbstractCatService catService;
     private final CatConverter converter;
+    private final UserService userService;
 
     @Autowired
-    public CatController(AbstractCatService service, CatConverter converter) {
-        this.service = service;
+    public CatController(AbstractCatService catService, CatConverter converter, UserService userService) {
+        this.catService = catService;
         this.converter = converter;
+        this.userService = userService;
     }
 
     @GetMapping("/get/all")
     public List<CatDto> getAll() {
-        return service
-                .getAll()
+        List<Cat> cats = userService
+                .isCurrentUserNotAnAdmin()
+                ? catService.getByOwnerId(userService.getCurrentOwnerId())
+                : catService.getAll();
+
+        return cats
                 .stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
@@ -36,13 +45,22 @@ public class CatController extends BaseController {
 
     @GetMapping("/get/{id}")
     public CatDto get(@PathVariable int id) {
-        return converter.toDto(service.get(id));
+        Cat cat = catService.get(id);
+        if (userService.isCurrentUserNotAnAdmin()
+                && cat.getOwner().getId() != userService.getCurrentOwnerId())
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        return converter.toDto(cat);
     }
 
     @GetMapping("/get/breed/{breed}")
     public List<CatDto> getByBreed(@PathVariable String breed) {
-        return service
-                .getByBreed(breed)
+        List<Cat> cats = userService
+                .isCurrentUserNotAnAdmin()
+                ? catService.getByBreedAndOwnerId(breed, userService.getCurrentOwnerId())
+                : catService.getByBreed(breed);
+
+        return cats
                 .stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
@@ -50,28 +68,44 @@ public class CatController extends BaseController {
 
     @GetMapping("/get/color/{color}")
     public List<CatDto> getByColor(@PathVariable String color) {
-        return service
-                .getByColor(Color.valueOf(color.toUpperCase()))
+        var enumColor = Color.valueOf(color.toUpperCase());
+
+        List<Cat> cats = userService
+                .isCurrentUserNotAnAdmin()
+                ? catService.getByColorAndOwnerId(enumColor, userService.getCurrentOwnerId())
+                : catService.getByColor(enumColor);
+
+        return cats
                 .stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public void create(@RequestBody CatDto cat) {
-        service.save(converter.toModel(cat));
+        catService.save(converter.toModel(cat));
     }
 
     @PostMapping("/update")
     public void update(@RequestBody CatDto cat) {
-        if (!service.exists(cat.getId()))
+        if (userService.isCurrentUserNotAnAdmin()
+                && cat.getOwnerId() != userService.getCurrentOwnerId())
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        if (!catService.exists(cat.getId()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        service.save(converter.toModel(cat));
+        catService.save(converter.toModel(cat));
     }
 
     @PostMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
-        service.delete(id);
+        Cat cat = catService.get(id);
+        if (userService.isCurrentUserNotAnAdmin()
+                && cat.getOwner().getId() != userService.getCurrentOwnerId())
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        catService.delete(id);
     }
 }

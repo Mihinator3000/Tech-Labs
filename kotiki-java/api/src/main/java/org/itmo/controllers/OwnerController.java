@@ -1,8 +1,10 @@
 package org.itmo.controllers;
 
 import org.itmo.dto.OwnerDto;
+import org.itmo.services.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.itmo.services.AbstractOwnerService;
@@ -15,18 +17,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/owner")
 public class OwnerController extends BaseController {
 
-    private final AbstractOwnerService service;
+    private final AbstractOwnerService ownerService;
     private final OwnerConverter converter;
+    private final UserService userService;
 
     @Autowired
-    public OwnerController(AbstractOwnerService service, OwnerConverter converter) {
-        this.service = service;
+    public OwnerController(AbstractOwnerService ownerService, OwnerConverter converter, UserService userService) {
+        this.ownerService = ownerService;
         this.converter = converter;
+        this.userService = userService;
     }
 
     @GetMapping("/get/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<OwnerDto> getAll() {
-        return service
+        return ownerService
                 .getAll()
                 .stream()
                 .map(converter::toDto)
@@ -35,24 +40,37 @@ public class OwnerController extends BaseController {
 
     @GetMapping("/get/{id}")
     public OwnerDto get(@PathVariable int id) {
-        return converter.toDto(service.get(id));
+        if (userService.isCurrentUserNotAnAdmin()
+                && userService.getCurrentOwnerId() != id)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        return converter.toDto(ownerService.get(id));
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public void create(@RequestBody OwnerDto owner) {
-        service.save(converter.toModel(owner));
+        ownerService.save(converter.toModel(owner));
     }
 
     @PostMapping("/update")
     public void update(@RequestBody OwnerDto owner) {
-        if (!service.exists(owner.getId()))
+        if (userService.isCurrentUserNotAnAdmin()
+                && userService.getCurrentOwnerId() != owner.getId())
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        if (!ownerService.exists(owner.getId()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        service.save(converter.toModel(owner));
+        ownerService.save(converter.toModel(owner));
     }
 
     @PostMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
-        service.delete(id);
+        if (userService.isCurrentUserNotAnAdmin()
+                && userService.getCurrentOwnerId() != id)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        ownerService.delete(id);
     }
 }

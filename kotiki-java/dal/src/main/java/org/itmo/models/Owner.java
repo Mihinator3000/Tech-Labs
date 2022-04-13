@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.itmo.models.auth.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ public class Owner {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @OneToMany()
+    @OneToMany
     @Cascade({
             CascadeType.PERSIST,
             CascadeType.MERGE,
@@ -43,6 +44,10 @@ public class Owner {
     @JoinColumn(name = "owner_id")
     @ToString.Exclude
     private List<Cat> cats = new ArrayList<>();
+
+    @OneToOne
+    @ToString.Exclude
+    private User user;
 
     @Override
     public boolean equals(Object o) {
