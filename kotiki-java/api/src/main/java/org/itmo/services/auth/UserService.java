@@ -1,9 +1,9 @@
 package org.itmo.services.auth;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dao.auth.UserDao;
 import org.itmo.models.auth.Role;
 import org.itmo.models.auth.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +17,10 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserDao dao;
-
-    @Autowired
-    public UserService(UserDao userDao) {
-        this.dao = userDao;
-    }
 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,6 +39,10 @@ public class UserService implements UserDetailsService {
         dao.save(user);
     }
 
+    public void delete(int id) {
+        dao.deleteById(id);
+    }
+
     public boolean isCurrentUserNotAnAdmin() {
         return SecurityContextHolder
                 .getContext()
@@ -59,6 +59,10 @@ public class UserService implements UserDetailsService {
                 .getId();
     }
 
+    public int getCurrentId() {
+        return dao.getByUsername(getCurrentUsername()).getId();
+    }
+
     public String getCurrentUsername() {
         Object principal = SecurityContextHolder
                 .getContext()
@@ -66,7 +70,7 @@ public class UserService implements UserDetailsService {
                 .getPrincipal();
 
         return principal instanceof UserDetails
-                ? ((UserDetails) principal).getUsername()
+                ? ((UserDetails)principal).getUsername()
                 : principal.toString();
     }
 

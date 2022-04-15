@@ -1,23 +1,19 @@
 package org.itmo.services;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dao.OwnerDao;
 import org.itmo.models.Owner;
 import org.itmo.tools.DalException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OwnerService implements AbstractOwnerService {
 
     private final OwnerDao dao;
-
-    @Autowired
-    public OwnerService(OwnerDao dao) {
-        this.dao = dao;
-    }
 
     public List<Owner> getAll() {
         return dao.findAll();

@@ -45,7 +45,7 @@ public class Owner {
     @ToString.Exclude
     private List<Cat> cats = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "owner")
     @ToString.Exclude
     private User user;
 

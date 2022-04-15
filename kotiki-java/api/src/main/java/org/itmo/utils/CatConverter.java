@@ -1,25 +1,20 @@
 package org.itmo.utils;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dto.CatDto;
 import org.itmo.models.Cat;
 import org.itmo.services.AbstractCatService;
 import org.itmo.services.AbstractOwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class CatConverter {
 
     private final AbstractCatService catService;
     private final AbstractOwnerService ownerService;
-
-    @Autowired
-    public CatConverter(AbstractCatService catService, AbstractOwnerService ownerService) {
-        this.catService = catService;
-        this.ownerService = ownerService;
-    }
 
     public CatDto toDto(Cat cat) {
         return CatDto.builder()

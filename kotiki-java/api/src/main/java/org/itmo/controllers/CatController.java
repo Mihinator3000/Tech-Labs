@@ -1,10 +1,10 @@
 package org.itmo.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dto.CatDto;
 import org.itmo.enums.Color;
 import org.itmo.models.Cat;
 import org.itmo.services.auth.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +17,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cat")
+@RequiredArgsConstructor
 public class CatController extends BaseController {
 
     private final AbstractCatService catService;
     private final CatConverter converter;
     private final UserService userService;
-
-    @Autowired
-    public CatController(AbstractCatService catService, CatConverter converter, UserService userService) {
-        this.catService = catService;
-        this.converter = converter;
-        this.userService = userService;
-    }
 
     @GetMapping("/get/all")
     public List<CatDto> getAll() {

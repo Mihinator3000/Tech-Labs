@@ -1,10 +1,12 @@
 package org.itmo.models.auth;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.itmo.models.Owner;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -40,4 +42,19 @@ public class User {
     @JoinColumn(name = "owner_id")
     @ToString.Exclude
     private Owner owner;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
+        var user = (User)o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

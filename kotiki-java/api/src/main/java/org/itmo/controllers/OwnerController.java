@@ -1,8 +1,8 @@
 package org.itmo.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dto.OwnerDto;
 import org.itmo.services.auth.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +15,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/owner")
+@RequiredArgsConstructor
 public class OwnerController extends BaseController {
 
     private final AbstractOwnerService ownerService;
     private final OwnerConverter converter;
     private final UserService userService;
-
-    @Autowired
-    public OwnerController(AbstractOwnerService ownerService, OwnerConverter converter, UserService userService) {
-        this.ownerService = ownerService;
-        this.converter = converter;
-        this.userService = userService;
-    }
 
     @GetMapping("/get/all")
     @PreAuthorize("hasRole('ADMIN')")

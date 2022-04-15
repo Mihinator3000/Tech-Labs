@@ -1,24 +1,20 @@
 package org.itmo.services;
 
+import lombok.RequiredArgsConstructor;
 import org.itmo.dao.CatDao;
 import org.itmo.enums.Color;
 import org.itmo.models.Cat;
 import org.itmo.tools.DalException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CatService implements AbstractCatService {
 
     private final CatDao dao;
-
-    @Autowired
-    public CatService(CatDao dao) {
-        this.dao = dao;
-    }
 
     public List<Cat> getAll() {
         return dao.findAll();
