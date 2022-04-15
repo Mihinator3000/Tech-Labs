@@ -24,17 +24,17 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public void update(@RequestBody UserDto user) {
-        if (userService.isCurrentUserNotAnAdmin()
-                && userService.getCurrentId() != user.getId())
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
         userService.save(userConverter.toModel(user));
     }
 
     @PostMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable int id) {
+        if (userService.isCurrentUserNotAnAdmin()
+                && userService.getCurrentId() != id)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         userService.delete(id);
     }
 }

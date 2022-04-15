@@ -38,7 +38,7 @@ public class User {
     @ToString.Exclude
     private List<Role> roles;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     @ToString.Exclude
     private Owner owner;
