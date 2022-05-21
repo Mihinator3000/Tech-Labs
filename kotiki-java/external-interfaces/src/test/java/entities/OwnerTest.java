@@ -1,5 +1,6 @@
-package org.itmo.entities;
+package entities;
 
+import org.itmo.entities.Owner;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

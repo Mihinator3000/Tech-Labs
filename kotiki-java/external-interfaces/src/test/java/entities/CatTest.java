@@ -1,5 +1,6 @@
-package org.itmo.entities;
+package entities;
 
+import org.itmo.entities.Cat;
 import org.itmo.enums.Color;
 import org.itmo.tools.DalException;
 import org.junit.jupiter.api.Test;
