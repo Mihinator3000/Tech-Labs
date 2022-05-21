@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.itmo</groupId>
-    <artifactId>kotiki-java</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>domain</artifactId>
     <version>1.0</version>
-    <modules>
-        <module>domain</module>
-        <module>domain-jpa</module>
-        <module>cats-access</module>
-        <module>owners-access</module>
-        <module>external-interfaces</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
