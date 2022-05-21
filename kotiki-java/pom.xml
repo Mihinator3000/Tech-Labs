@@ -9,8 +9,11 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
+        <module>domain</module>
+        <module>domain-jpa</module>
         <module>cats-access</module>
         <module>owners-access</module>
+        <module>external-interfaces</module>
     </modules>
 
     <properties>

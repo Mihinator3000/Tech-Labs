@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.itmo.dto.CatDto;
 import org.itmo.dto.rabbit.BreedDto;
 import org.itmo.dto.rabbit.ColorDto;
+import org.itmo.dto.rabbit.OwnerIdDto;
 import org.itmo.enums.Color;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.itmo.configs.CatsRabbitConfig.*;
 
@@ -25,7 +25,7 @@ public class CatService implements AbstractCatService {
         return (List<CatDto>)template.convertSendAndReceive(
                 CATS_EXCHANGE,
                 CATS_FULL_ACCESS_ROUTING_KEY,
-                Optional.empty());
+                new OwnerIdDto());
     }
 
     public CatDto get(int id) {
@@ -54,7 +54,7 @@ public class CatService implements AbstractCatService {
         return (List<CatDto>)template.convertSendAndReceive(
                 CATS_EXCHANGE,
                 CATS_ACCESS_ROUTING_KEY,
-                Optional.of(ownerId));
+                new OwnerIdDto(ownerId));
     }
 
     public List<CatDto> getByBreedAndOwnerId(String breed, int ownerId) {

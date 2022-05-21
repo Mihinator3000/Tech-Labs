@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.itmo.dto.CatDto;
 import org.itmo.dto.rabbit.BreedDto;
 import org.itmo.dto.rabbit.ColorDto;
+import org.itmo.dto.rabbit.OwnerIdDto;
 import org.itmo.services.AbstractCatService;
 import org.itmo.utils.CatConverter;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.itmo.configs.CatsRabbitConfig.*;
@@ -24,10 +24,10 @@ public class CatListener {
     private final CatConverter converter;
 
     @RabbitListener(queues = CATS_FULL_ACCESS_QUEUE)
-    public List<CatDto> getAll(Optional<Integer> ownerId) {
-        return (ownerId.isEmpty()
+    public List<CatDto> getAll(OwnerIdDto ownerId) {
+        return (ownerId.getId() == null
                 ? service.getAll()
-                : service.getByOwnerId(ownerId.get()))
+                : service.getByOwnerId(ownerId.getId()))
                 .stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
